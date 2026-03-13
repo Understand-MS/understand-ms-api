@@ -32,6 +32,10 @@ module "api" {
   resource_group_name            = "${var.app_name}-rg"
   container_app_environment_id   = azurerm_container_app_environment.env.id
   container_image                = var.container_image
+
+  depends_on = [
+    azurerm_resource_group.main
+  ]
 }
 
 resource "azurerm_storage_account" "tfstate" {

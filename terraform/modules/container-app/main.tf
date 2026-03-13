@@ -31,8 +31,4 @@ resource "azurerm_container_app" "app" {
       template[0].container[0].image
     ]
   }
-
-  depends_on = [
-    azurerm_resource_group.main
-  ]
 }
