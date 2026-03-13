@@ -4,15 +4,10 @@ resource "azurerm_container_app" "app" {
   container_app_environment_id = var.container_app_environment_id
   revision_mode                = "Single"
 
-  secret {
-    name  = "ghcr-token"
-    value = var.github_pat
-  }
-
   registry {
     server               = "ghcr.io"
     username             = var.github_username
-    password_secret_name = "ghcr-token"
+    password_secret_name = var.github_pat
   }
 
   template {
