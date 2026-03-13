@@ -27,6 +27,10 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Bootstrap Terraform Backend
+        shell: pwsh
+        run: ./bootstrap.ps1
+
       - name: Terraform Init
         working-directory: terraform
         run: terraform init
@@ -62,6 +66,10 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+
+      - name: Bootstrap Terraform Backend
+        shell: pwsh
+        run: ./bootstrap.ps1
 
       - name: Terraform Init
         run: terraform init
