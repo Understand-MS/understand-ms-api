@@ -3,6 +3,10 @@ name: provision-infrastructure
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   dev:
     name: Provision Dev Environment
