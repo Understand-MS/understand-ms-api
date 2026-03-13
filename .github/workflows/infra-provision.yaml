@@ -36,7 +36,7 @@ jobs:
         run: terraform apply -auto-approve
         env:
           TF_VAR_environment: dev
-          TF_VAR_location: westeurope
+          TF_VAR_location: northeurope
           TF_VAR_container_app_environment_name: dev-env
           TF_VAR_app_name: understand-ms
           TF_VAR_container_image: ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/api:latest
@@ -68,7 +68,7 @@ jobs:
         run: terraform apply -auto-approve
         env:
           TF_VAR_environment: prod
-          TF_VAR_location: westeurope
+          TF_VAR_location: northeurope
           TF_VAR_container_app_environment_name: prod-env
           TF_VAR_app_name: understand-ms
           TF_VAR_container_image: ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/api:latest
