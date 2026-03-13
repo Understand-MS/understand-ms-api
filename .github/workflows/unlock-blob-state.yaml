@@ -15,9 +15,7 @@ permissions:
 jobs:
   unlock:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
+    environment: dev
 
     steps:
       - name: Checkout repository
