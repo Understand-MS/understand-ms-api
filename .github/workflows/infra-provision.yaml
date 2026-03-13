@@ -6,7 +6,7 @@ on:
       - "terraform/**"
       - ".github/workflows/infra-provision.yaml"
   workflow_dispatch:
-  
+
 permissions:
   id-token: write
   contents: read
@@ -50,6 +50,8 @@ jobs:
           TF_VAR_location: northeurope
           TF_VAR_container_app_environment_name: dev-env
           TF_VAR_app_name: understand-ms
+          TF_VAR_github_username: ${{ secrets.GHCR_USERNAME }}
+          TF_VAR_github_pat: ${{ secrets.GHCR_PAT }}
 
   prod:
     name: Provision Prod Environment
