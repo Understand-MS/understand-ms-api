@@ -39,7 +39,7 @@ module "api" {
 }
 
 resource "azurerm_storage_account" "tfstate" {
-  name                     = var.resource_group_name
+  name                     = replace(var.resource_group_name, "-", "")
   resource_group_name      = azurerm_resource_group.main.name
   location                 = azurerm_resource_group.main.location
   account_tier             = "Standard"
