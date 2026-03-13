@@ -1,4 +1,4 @@
-# Optional to create resource group and storage account for the Terraform state
+# scripts/bootstrap.ps1
 param(
     [string]$ResourceGroup = "understand-ms-rg",
     [string]$Location = "northeurope",
@@ -11,12 +11,20 @@ az group create `
     --name $ResourceGroup `
     --location $Location `
     --output none
+Write-Host "Resource Group ensured."
 
-Write-Host "Checking if Storage Account exists..."
-$saCheck = az storage account check-name --name $StorageAccount | ConvertFrom-Json
+Write-Host "Checking if Storage Account exists in Resource Group..."
+try {
+    $sa = az storage account show `
+        --name $StorageAccount `
+        --resource-group $ResourceGroup `
+        --output json 2>$null | ConvertFrom-Json
+} catch {
+    $sa = $null
+}
 
-if ($saCheck.nameAvailable) {
-    Write-Host "Creating Storage Account..."
+if (-not $sa) {
+    Write-Host "Storage Account does not exist. Creating..."
     az storage account create `
         --name $StorageAccount `
         --resource-group $ResourceGroup `
@@ -24,15 +32,20 @@ if ($saCheck.nameAvailable) {
         --sku Standard_LRS `
         --kind StorageV2 `
         --output none
+    Write-Host "Storage Account created."
 } else {
-    Write-Host "Storage account already exists."
+    Write-Host "Storage Account already exists."
 }
 
-Write-Host "Getting Storage Account Key..."
+Write-Host "Retrieving Storage Account key..."
 $storageKey = az storage account keys list `
     --resource-group $ResourceGroup `
     --account-name $StorageAccount `
     --query "[0].value" -o tsv
+
+if (-not $storageKey) {
+    throw "Failed to retrieve Storage Account key. Exiting."
+}
 
 Write-Host "Creating Blob Container if not exists..."
 try {
@@ -41,8 +54,7 @@ try {
         --account-name $StorageAccount `
         --account-key $storageKey `
         --output none
+    Write-Host "Blob container ensured."
 } catch {
-    Write-Host "Blob container '$ContainerName' already exists."
+    Write-Host "Blob container '$ContainerName' already exists or failed to create."
 }
-
-Write-Host "Bootstrap completed successfully."
