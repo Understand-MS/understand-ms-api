@@ -71,4 +71,4 @@ jobs:
           TF_VAR_location: westeurope
           TF_VAR_container_app_environment_name: prod-env
           TF_VAR_app_name: understand-ms
-          TF_VAR_container_image: ghcr.io/${{ github.repository }}/api:latest
+          TF_VAR_container_image: ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/api:latest
