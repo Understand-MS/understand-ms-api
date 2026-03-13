@@ -31,6 +31,9 @@ jobs:
         working-directory: terraform
         run: terraform init
 
+      - name: Set Container Image
+        run: echo "TF_VAR_container_image=ghcr.io/${GITHUB_REPOSITORY,,}/api:latest" >> $GITHUB_ENV
+
       - name: Terraform Apply (Dev)
         working-directory: terraform
         run: terraform apply -auto-approve
@@ -39,7 +42,6 @@ jobs:
           TF_VAR_location: northeurope
           TF_VAR_container_app_environment_name: dev-env
           TF_VAR_app_name: understand-ms
-          TF_VAR_container_image: ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/api:latest
 
   prod:
     name: Provision Prod Environment
@@ -64,6 +66,9 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Set Container Image
+        run: echo "TF_VAR_container_image=ghcr.io/${GITHUB_REPOSITORY,,}/api:latest" >> $GITHUB_ENV
+
       - name: Terraform Apply (Prod)
         run: terraform apply -auto-approve
         env:
@@ -71,4 +76,3 @@ jobs:
           TF_VAR_location: northeurope
           TF_VAR_container_app_environment_name: prod-env
           TF_VAR_app_name: understand-ms
-          TF_VAR_container_image: ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/api:latest
