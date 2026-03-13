@@ -37,12 +37,12 @@ jobs:
 
       - name: Build Docker image
         run: |
-          IMAGE=ghcr.io/${{ github.repository }}/api:${{ steps.meta.outputs.tag }}
+          IMAGE=ghcr.io/${{ github.repository,, }}/api:${{ steps.meta.outputs.tag }}
           docker build -t $IMAGE api/
 
       - name: Push Docker image
         run: |
-          IMAGE=ghcr.io/${{ github.repository }}/api:${{ steps.meta.outputs.tag }}
+          IMAGE=ghcr.io/${{ github.repository,, }}/api:${{ steps.meta.outputs.tag }}
           docker push $IMAGE
 
   deploy-dev:
@@ -59,7 +59,7 @@ jobs:
 
       - name: Deploy to Dev
         run: |
-          IMAGE=ghcr.io/${{ github.repository }}/api:${{ github.event.workflow_run.head_sha }}
+          IMAGE=ghcr.io/${{ github.repository,, }}/api:${{ github.event.workflow_run.head_sha }}
 
           az containerapp update \
             --name ms-chat-api-dev \
@@ -79,7 +79,7 @@ jobs:
 
       - name: Deploy to Prod
         run: |
-          IMAGE=ghcr.io/${{ github.repository }}/api:${{ github.event.workflow_run.head_sha }}
+          IMAGE=ghcr.io/${{ github.repository,, }}/api:${{ github.event.workflow_run.head_sha }}
 
           az containerapp update \
             --name ms-chat-api-prod \
