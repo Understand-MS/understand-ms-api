@@ -37,13 +37,18 @@ jobs:
 
       - name: Build Docker image
         run: |
-          IMAGE=ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]'):${{ steps.meta.outputs.tag }}
-          docker build -t $IMAGE api/
+          IMAGE_SHA=ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]'):${{ steps.meta.outputs.tag }}
+          IMAGE_LATEST=ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]'):latest
+          
+          docker build -t $IMAGE_SHA -t $IMAGE_LATEST api/
 
       - name: Push Docker image
         run: |
-          IMAGE=ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]'):${{ steps.meta.outputs.tag }}
-          docker push $IMAGE
+          IMAGE_SHA=ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]'):${{ steps.meta.outputs.tag }}
+          IMAGE_LATEST=ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]'):latest
+          
+          docker push $IMAGE_SHA
+          docker push $IMAGE_LATEST
 
   deploy-dev:
     runs-on: ubuntu-latest
