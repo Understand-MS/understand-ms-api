@@ -9,10 +9,6 @@ resource "azurerm_log_analytics_workspace" "logs" {
   resource_group_name = azurerm_resource_group.main.name
   sku                 = "PerGB2018"
   retention_in_days   = 30
-
-  depends_on = [
-    azurerm_resource_group.main
-  ]
 }
 
 resource "azurerm_container_app_environment" "env" {
@@ -20,10 +16,6 @@ resource "azurerm_container_app_environment" "env" {
   location                   = azurerm_resource_group.main.location
   resource_group_name        = azurerm_resource_group.main.name
   log_analytics_workspace_id = azurerm_log_analytics_workspace.logs.id
-
-  depends_on = [
-    azurerm_resource_group.main
-  ]
 }
 
 module "api" {
@@ -32,8 +24,4 @@ module "api" {
   resource_group_name            = "${var.app_name}-rg"
   container_app_environment_id   = azurerm_container_app_environment.env.id
   container_image                = var.container_image
-
-  depends_on = [
-    azurerm_resource_group.main
-  ]
 }
