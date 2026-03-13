@@ -13,3 +13,11 @@ variable "container_app_environment_id" {
 variable "container_image" {
   type = string
 }
+
+variable "github_username" {
+  type = string
+}
+
+variable "github_pat" {
+  type = string
+}

@@ -2,6 +2,17 @@ data "azurerm_resource_group" "main" {
   name = var.resource_group_name
 }
 
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_key_vault" "kv" {
+  name                = "${var.app_name}-${var.environment}-kv"
+  location            = data.azurerm_resource_group.main.location
+  resource_group_name = data.azurerm_resource_group.main.name
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+
+  sku_name = "standard"
+}
+
 resource "azurerm_log_analytics_workspace" "logs" {
   name                = "${var.app_name}-${var.environment}-logs"
   location            = data.azurerm_resource_group.main.location
@@ -24,4 +35,6 @@ module "api" {
   resource_group_name          = data.azurerm_resource_group.main.name
   container_app_environment_id = azurerm_container_app_environment.env.id
   container_image              = var.container_image
+  github_username              = var.github_username
+  github_pat                   = var.github_pat
 }

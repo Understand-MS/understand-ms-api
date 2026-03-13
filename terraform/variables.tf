@@ -28,3 +28,11 @@ variable "container_image" {
   type        = string
   description = "Docker image for the Container App"
 }
+
+variable "github_username" {
+  type = string
+}
+
+variable "github_pat" {
+  type = string
+}
