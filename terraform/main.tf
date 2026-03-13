@@ -45,7 +45,6 @@ resource "azurerm_storage_account" "tfstate" {
     azurerm_resource_group.main
   ]
 }
-}
 
 resource "azurerm_storage_container" "tfstate" {
   name                  = "tfstate"
