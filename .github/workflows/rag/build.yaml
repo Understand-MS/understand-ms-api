@@ -1,0 +1,27 @@
+name: Build and Push RAG Docker Image
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'rag/**'
+      - '.github/workflows/rag/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build RAG Docker image
+        run: docker build -t ghcr.io/${{ github.repository }}/understand-ms-rag:latest ./api
+
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository }}/understand-ms-rag:latest

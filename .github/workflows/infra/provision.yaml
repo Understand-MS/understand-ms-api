@@ -1,0 +1,66 @@
+name: provision-infrastructure
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dev:
+    name: Provision Dev Environment
+    runs-on: ubuntu-latest
+    environment: dev
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply (Dev)
+        run: terraform apply -auto-approve
+        env:
+          TF_VAR_environment: dev
+          TF_VAR_location: westeurope
+          TF_VAR_container_app_environment_name: dev-env
+          TF_VAR_app_name: understand-ms
+          TF_VAR_container_image: ghcr.io/${{ github.repository }}/api:latest
+
+  prod:
+    name: Provision Prod Environment
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: dev
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply (Prod)
+        run: terraform apply -auto-approve
+        env:
+          TF_VAR_environment: prod
+          TF_VAR_location: westeurope
+          TF_VAR_container_app_environment_name: prod-env
+          TF_VAR_app_name: understand-ms
+          TF_VAR_container_image: ghcr.io/${{ github.repository }}/api:latest
