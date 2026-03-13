@@ -8,11 +8,6 @@ variable "resource_group_name" {
   default     = "understand-ms-rg"
 }
 
-variable "container_app_environment_name" {
-  description = "Shared Container Apps environment name"
-  type        = string
-}
-
 variable "location" {
   type        = string
   description = "Azure region"
