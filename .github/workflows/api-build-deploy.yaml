@@ -13,9 +13,6 @@ jobs:
     outputs:
       image_tag: ${{ steps.meta.outputs.tag }}
 
-    env:
-      GITHUB_REPOSITORY: ${{ github.repository | toLower }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -40,12 +37,12 @@ jobs:
 
       - name: Build Docker image
         run: |
-          IMAGE=ghcr.io/${GITHUB_REPOSITORY}/api:${{ steps.meta.outputs.tag }}
+          IMAGE=ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/api:${{ steps.meta.outputs.tag }}
           docker build -t $IMAGE api/
 
       - name: Push Docker image
         run: |
-          IMAGE=ghcr.io/${GITHUB_REPOSITORY}/api:${{ steps.meta.outputs.tag }}
+          IMAGE=ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/api:${{ steps.meta.outputs.tag }}
           docker push $IMAGE
 
   deploy-dev:
@@ -65,7 +62,7 @@ jobs:
 
       - name: Deploy to Dev
         run: |
-          IMAGE=ghcr.io/${GITHUB_REPOSITORY}/api:${{ github.event.workflow_run.head_sha }}
+          IMAGE=ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/api:${{ github.event.workflow_run.head_sha }}
 
           az containerapp update \
             --name ms-chat-api-dev \
@@ -78,7 +75,7 @@ jobs:
     environment: prod
 
     env:
-      GITHUB_REPOSITORY: ${{ github.repository | toLower }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
 
     steps:
       - name: Azure Login
@@ -88,7 +85,7 @@ jobs:
 
       - name: Deploy to Prod
         run: |
-          IMAGE=ghcr.io/${GITHUB_REPOSITORY}/api:${{ github.event.workflow_run.head_sha }}
+          IMAGE=ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/api:${{ github.event.workflow_run.head_sha }}
 
           az containerapp update \
             --name ms-chat-api-prod \
