@@ -52,7 +52,7 @@ resource "azurerm_storage_container" "tfstate" {
   container_access_type = "private"
 
   depends_on = [
-    azurerm_resource_group.main
-    azurerm_storage_account.tfstate,
+    azurerm_resource_group.main,
+    azurerm_storage_account.tfstate
   ]
 }
