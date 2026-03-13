@@ -8,7 +8,7 @@ terraform {
 
   backend "azurerm" {
     resource_group_name  = "understand-ms-rg"
-    storage_account_name = "understandmstfstateaccount"
+    storage_account_name = "umstfstate001"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
   }

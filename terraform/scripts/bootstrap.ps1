@@ -2,7 +2,7 @@
 param(
     [string]$ResourceGroup = "understand-ms-rg",
     [string]$Location = "northeurope",
-    [string]$StorageAccount = "understandmstfstateaccount",
+    [string]$StorageAccount = "umstfstate001",
     [string]$ContainerName = "tfstate"
 )
 
