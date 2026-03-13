@@ -5,7 +5,8 @@ on:
     paths:
       - "terraform/**"
       - ".github/workflows/infra-provision.yaml"
-
+  workflow_dispatch:
+  
 permissions:
   id-token: write
   contents: read
