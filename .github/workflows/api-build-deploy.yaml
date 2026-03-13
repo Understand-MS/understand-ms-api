@@ -1,9 +1,10 @@
-name: build-api
+name: build-deploy-api
 
 on:
   push:
     paths:
       - "api/**"
+      - ".github/workflows/api-build-deploy.yaml"
 
 jobs:
   build:
