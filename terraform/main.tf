@@ -15,6 +15,22 @@ resource "azurerm_log_analytics_workspace" "logs" {
   ]
 }
 
+resource "azurerm_container_app_environment" "env" {
+  name                       = var.container_app_environment_name
+  location                   = azurerm_resource_group.main.location
+  resource_group_name        = azurerm_resource_group.main.name
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.logs.id
+
+  sku {
+    name     = "Standard" 
+    capacity = 1 
+  }
+
+  depends_on = [
+    azurerm_resource_group.main
+  ]
+}
+
 module "api" {
   source                        = "./modules/container-app"
   app_name                       = var.app_name

@@ -37,36 +37,38 @@ jobs:
         env:
           TF_VAR_environment: dev
           TF_VAR_location: westeurope
+          TF_VAR_container_app_environment_name: dev-env
           TF_VAR_app_name: understand-ms
           TF_VAR_container_image: ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/api:latest
 
-  # prod:
-  #   name: Provision Prod Environment
-  #   runs-on: ubuntu-latest
-  #   environment: prod
-  #   needs: dev
+  prod:
+    name: Provision Prod Environment
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: dev
 
-  #   steps:
-  #     - name: Login to Azure using OIDC
-  #       uses: azure/login@v1
-  #       with:
-  #         client-id: ${{ secrets.AZURE_CLIENT_ID }}
-  #         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-  #         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    steps:
+      - name: Login to Azure using OIDC
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-  #     - name: Setup Terraform
-  #       uses: hashicorp/setup-terraform@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
-  #     - name: Terraform Init
-  #       run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
-  #     - name: Terraform Apply (Prod)
-  #       run: terraform apply -auto-approve
-  #       env:
-  #         TF_VAR_environment: prod
-  #         TF_VAR_location: westeurope
-  #         TF_VAR_app_name: understand-ms
-  #         TF_VAR_container_image: ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/api:latest
+      - name: Terraform Apply (Prod)
+        run: terraform apply -auto-approve
+        env:
+          TF_VAR_environment: prod
+          TF_VAR_location: westeurope
+          TF_VAR_container_app_environment_name: prod-env
+          TF_VAR_app_name: understand-ms
+          TF_VAR_container_image: ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')/api:latest
