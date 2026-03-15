@@ -7,6 +7,7 @@ from uuid import UUID, uuid4
 class Message:
     question: str
     answer: str
+    id: UUID = field(default_factory=uuid4)
     created_at: datetime = field(default_factory=datetime.utcnow)
 
 

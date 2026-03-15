@@ -3,7 +3,7 @@ from uuid import uuid4
 
 import pytest
 
-from api.application.use_cases.ask_question import AskQuestionUseCase
+from api.application.use_cases.ask_question import AskQuestionResult, AskQuestionUseCase
 from api.domain.entities.conversation import Conversation
 
 
@@ -31,8 +31,18 @@ def use_case(mock_repository, mock_rag_service):
 
 
 async def test_returns_answer_from_rag_service(use_case, mock_rag_service):
-    answer = await use_case.execute(question="What is MS?")
-    assert answer == "MS is a chronic autoimmune disease."
+    result: AskQuestionResult = await use_case.execute(question="What is MS?")
+    assert result.message.answer == "MS is a chronic autoimmune disease."
+
+
+async def test_returns_conversation_id(use_case):
+    result: AskQuestionResult = await use_case.execute(question="What is MS?")
+    assert result.conversation_id is not None
+
+
+async def test_returns_message_with_id(use_case):
+    result: AskQuestionResult = await use_case.execute(question="What is MS?")
+    assert result.message.id is not None
 
 
 async def test_creates_new_conversation_when_no_id_given(use_case, mock_repository):

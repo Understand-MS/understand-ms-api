@@ -10,7 +10,7 @@ terraform {
     resource_group_name  = "understand-ms-rg"
     storage_account_name = "umstfstate001"
     container_name       = "tfstate"
-    key                  = "terraform.tfstate"
+    key                  = "terraform.api_state"
   }
 }
 

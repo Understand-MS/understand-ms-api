@@ -5,5 +5,5 @@ output "container_app_url" {
 
 output "cosmos_endpoint" {
   description = "Cosmos DB account endpoint"
-  value       = azurerm_cosmosdb_account.cosmos.endpoint
+  value       = module.cosmos.endpoint
 }
