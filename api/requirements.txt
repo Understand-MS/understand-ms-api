@@ -1,5 +1,10 @@
 fastapi
 uvicorn[standard]
 pydantic
+pydantic-settings
 python-dotenv
+azure-cosmos>=4.0.0
+azure-identity
 pytest
+pytest-asyncio
+aiohttp

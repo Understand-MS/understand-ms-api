@@ -21,3 +21,8 @@ variable "github_username" {
 variable "github_pat" {
   type = string
 }
+
+variable "cosmos_url" {
+  type        = string
+  description = "Cosmos DB account endpoint URL"
+}

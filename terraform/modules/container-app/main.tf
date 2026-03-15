@@ -4,6 +4,10 @@ resource "azurerm_container_app" "app" {
   container_app_environment_id = var.container_app_environment_id
   revision_mode                = "Single"
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   secret {
     name  = "ghcr-token"
     value = var.github_pat
@@ -21,6 +25,11 @@ resource "azurerm_container_app" "app" {
       image  = var.container_image
       cpu    = 0.5
       memory = "1Gi"
+
+      env {
+        name  = "COSMOS_URL"
+        value = var.cosmos_url
+      }
     }
 
     min_replicas = 0
